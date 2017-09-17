@@ -1,3 +1,4 @@
+//https://stackoverflow.com/questions/35158817/angular-2-orderby-pipe
 import {Pipe, PipeTransform} from "@angular/core";
 
 @Pipe({name: "orderby", pure: false})
