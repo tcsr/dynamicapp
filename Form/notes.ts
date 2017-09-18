@@ -68,3 +68,38 @@ text-box.component.html:
     <input type="text" class=" form-control" [formControlName]="dynamicData.name" [attr.name]="dynamicData.name" [(ngModel)]="response"
     />
 </div>
+----------------
+
+<ul>
+  <li *ngFor="let panel of dynamicData?.DYNAMIC_DATA | orderby:'PANEL_ORDER' ">
+    <!-- panel loop starts-->
+    {{panel.PANEL_ID}} <br><br> {{panel.PANEL_CONTENT| json}} <br><br>
+    <ul>
+      <li *ngFor="let panelContent of panel.PANEL_CONTENT">
+        <!-- panelContent loop starts-->
+        <!-- {{ panelContent | json }}-->
+        {{panelContent?.NESTED_PANELS | json}}
+        <ul>
+          <li *ngFor="let nestedPanel of panelContent?.NESTED_PANELS">
+            nestedPanel: {{ nestedPanel.PANEL_CONTENT | json }}
+            <ul>
+              <li *ngFor="let pcofnestedPanel of nestedPanel?.PANEL_CONTENT">
+                {{ pcofnestedPanel | json }}
+                <ul>
+                  <li *ngFor="let nppcofnestedPanel of pcofnestedPanel?.PANEL_CONTENT">
+                    {{nppcofnestedPanel | json}}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <panel-component [dynamicData]="nestedPanel?.PANEL_CONTENT"></panel-component>
+          </li>
+        </ul>
+        <!-- <panel-component [dynamicData]="panelContent.NESTED_PANELS"></panel-component> -->
+      </li>
+      <!-- panelContent loop ends-->
+    </ul>
+    <panel-component [dynamicData]="panelContent?.NESTED_PANELS"></panel-component>
+  </li>
+  <!-- panel loop ends-->
+</ul>
