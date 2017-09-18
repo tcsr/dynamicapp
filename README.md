@@ -1,3 +1,114 @@
+=====================================================================================================================
+  
+	  <panel>
+		IF  <panel-content>
+		   
+		   IF <nested-panel>
+			
+				  if<panel-content>
+				  
+				   </panel-content>
+			
+			  </nested-panel>
+	   
+		   </panel-content>
+	  </panel>
+=================================================================================  
+<dynamic-controls>
+  
+  <div *ngFor="let dynamiComp of dynamicData">
+  
+	  <div [ngSwitch]="dynamiComp.COMP_TYPE">
+	  
+	   <div *ngSwitchCase="'Text_Box'" [style.width.%]="dynamiComp.compWidth">
+			<textbox-component [dynamicData]="dynamiComp"></textbox-component>
+        </div>
+        <div *ngSwitchCase="'Text_Area'" [style.width.%]="dynamiComp.compWidth">
+			<textarea-component [dynamicData]="dynamiComp"></textarea-component>
+        </div>
+        <div *ngSwitchCase="'Radio'">
+			<radio-component [dynamicData]="dynamiComp"></radio-component>
+        </div>
+        <div *ngSwitchCase="'Date_Picker'" [style.width.%]="dynamiComp.compWidth">
+			<date-component [dynamicData]="dynamiComp"></date-component>
+        </div>
+        <div *ngSwitchCase="'Check_Box'">
+			<checkbox-component [dynamicData]="dynamiComp"></checkbox-component>
+        </div>
+        <div *ngSwitchCase="'Drop_Down'" [style.width.%]="dynamiComp.compWidth">
+			<dropdown-component [dynamicData]="dynamiComp"></dropdown-component>
+        </div>
+        <div *ngSwitchCase="'Label'" [style.width.%]="dynamiComp.compWidth">
+			<label-component [dynamicData]="dynamiComp"></label-component>
+        </div>
+        <div *ngSwitchCase="'Empty'" [style.width.%]="dynamiComp.compWidth">
+			<empty-component></empty-component>
+        </div>
+	  
+	  </div>
+  
+  </div>
+  
+</dynamic-controls>
+  
+  
+=================================================================================
+
+	  <div *ngFor="let panel of  Panels">
+	    <panel [dynamicData]=""></panel>
+	  </div>
+	  
+=================================================================================
+     <panel>
+	 
+	   <div class="panel panel-default">
+	   
+		   <div *ngIf="panel.PANEL_TITLE" class="panel-tilte">
+		      {{ panel.PANEL_TITLE }}
+		   </div>
+		   
+		   <div *ngIf="panel.PANEL_CONTENT" class="panel-body">
+		      
+				<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
+				
+					<panel-content [dynamicData]="panelContent"></panel-content>
+				
+				</div>
+											  			   
+			</div>  
+			
+	  </div>
+		   	    	 
+	 </panel>
+      
+=================================================================================
+  
+  <panel-content>
+  
+	<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
+				
+	   <dynamic-controls [dynamicData]="panelContent"></dynamic-controls>
+				
+	</div>
+    
+  </panel-content>
+  
+=================================================================================
+  
+  <nested-panel-content>
+  
+	<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
+				
+	   <dynamic-controls [dynamicData]="panelContent"></dynamic-controls>
+				
+	</div>
+    
+  </nested-panel-content>
+
+=================================================================================
+
+
+
 <my-date-picker formControlName="toDate" name="toDate" [options]="myDatePickerOptions" [(ngModel)]="toDate" (dateChanged)="onToDateChanged($event)"></my-date-picker>
 ---------------------------------------------
 
