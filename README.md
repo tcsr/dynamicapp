@@ -82,3 +82,109 @@ import { MyDatePicker, IMyDpOptions, IMyDateModel } from 'mydatepicker';
         //return this.config;
     }
 ---------------------------
+
+<div>
+  <div *ngFor="let panel of dynamicData | orderby:'PANEL_ORDER'">
+    <!-- {{panel.PANEL_ID}} : {{panel.PANEL_ORDER}} : {{ panel.PANEL_TYPE}} <br> -->
+    <div class="panel panel-default">
+      <div *ngIf="panel.PANEL_TITLE" class="panel-heading panel-title text-center col-md-12">
+        {{ panel.PANEL_TITLE}}
+      </div>
+
+    </div>
+
+    <div>
+      <div *ngFor="let panelval of panel?.PANEL_CONTENT | orderby:'ORDER'" [ngClass]="{'col-md-12': panel.COMP_PER_ROW == 1,'col-md-6': panel.COMP_PER_ROW == 2, 'col-md-4': panel.COMP_PER_ROW == 3, 'col-md-3': panel.COMP_PER_ROW == 4}" class="comp-space">
+        <!-- <pre *ngIf="panelval">{{ panelval | json }}</pre> -->
+        <!-- <div *ngIf="panelval.COMP_NAME">{{ panelval.COMP_NAME }} - {{ panelval.COMP_LABL }}</div> -->
+
+        <div *ngIf="panelval.COMP_TYPE=='ENV_LINK'" class="row">
+          <div class="col-md-12">
+            <div style="margin: 8px 0;">
+              <envLink-Component [envLinkData]="panelval"></envLink-Component>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3" *ngIf="panelval.COMP_TYPE=='Menu'">
+          <menu-component [menuData]='panelval'></menu-component>
+        </div>
+        <!-- <div class="col-md-9" *ngIf="panelval?.NESTED_PANELS?.PANEL_CONTENT">
+         :NESTED_PANELS:
+        
+       </div> -->
+
+
+
+        <!-- PanelVal := {{panelval | json}} -->
+
+
+
+        <div [ngSwitch]="panelval.COMP_TYPE">
+          <!-- {{panelval  | json}} -->
+          <div *ngSwitchCase="'Text_Box'" [style.width.%]="panelval.compWidth">
+            <textbox-component [dynamicData]="panelval"></textbox-component>
+          </div>
+          <div *ngSwitchCase="'Text_Area'" [style.width.%]="panelval.compWidth">
+            <textarea-component [dynamicData]="panelval"></textarea-component>
+          </div>
+          <div *ngSwitchCase="'Radio'">
+            <radio-component [dynamicData]="panelval"></radio-component>
+          </div>
+          <div *ngSwitchCase="'Date_Picker'" [style.width.%]="panelval.compWidth">
+            <date-component [dynamicData]="panelval"></date-component>
+          </div>
+          <div *ngSwitchCase="'Check_Box'">
+            <checkbox-component [dynamicData]="panelval"></checkbox-component>
+          </div>
+          <div *ngSwitchCase="'Drop_Down'" [style.width.%]="panelval.compWidth">
+            <dropdown-component [dynamicData]="panelval"></dropdown-component>
+          </div>
+          <div *ngSwitchCase="'Label'" [style.width.%]="panelval.compWidth">
+            <label-component [dynamicData]="panelval"></label-component>
+          </div>
+          <div *ngSwitchCase="'Empty'" [style.width.%]="panelval.compWidth">
+            <empty-component></empty-component>
+          </div>
+
+          <!-- </div> -->
+
+        </div>
+
+
+
+        <div *ngIf="panelval.COMP_NAME"></div>
+
+        <!-- <div *ngFor="let pval of panelval">
+
+          <pre>{{ pval | json }}</pre>
+
+        </div> -->
+        <div *ngIf="panel.PANEL_TYPE == 'Button_Panel' && panelval.COMP_LABL">
+          <!-- <pre> {{panelval | json}} </pre> -->
+          <button-component [dynamicData]="panelval"></button-component>
+        </div>
+
+
+        <panel-component [dynamicData]="panelval.NESTED_PANELS"></panel-component>
+      </div>
+    </div>
+  </div>
+</div>
+
+-------------------------
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ComponentRef, ViewContainerRef } from '@angular/core';
+import { ComponentFactory, ChangeDetectorRef, ComponentFactoryResolver } from '@angular/core'
+ constructor(private _dgitService: DgitService, private resolver: ComponentFactoryResolver) { }
+ 
+   @ViewChild("dgitContainer", { read: ViewContainerRef }) container;
+  componentRef: ComponentRef<any>;
+	
+    loadComponent(componentName: any, dynamicData: any) {
+    this.container.clear();
+    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(componentName);
+    this.componentRef = this.container.createComponent(factory);
+    this.componentRef.instance.dynamicData = dynamicData;
+    this.componentRef.instance.output.subscribe(event => console.log(event));
+  }
+ 
