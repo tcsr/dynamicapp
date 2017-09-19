@@ -298,4 +298,21 @@ import { ComponentFactory, ChangeDetectorRef, ComponentFactoryResolver } from '@
     this.componentRef.instance.dynamicData = dynamicData;
     this.componentRef.instance.output.subscribe(event => console.log(event));
   }
- 
+ ------------------css
+ .myOverlay {
+z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.2;
+    background: #000;
+}
+
+.loadingGIF {
+    margin-top: 27%;
+    position: absolute;
+    left: 45%;
+    top: 0;
+    z-index: 3;
+    font-size: 64px;
+}
