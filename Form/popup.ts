@@ -1,6 +1,3 @@
-
-https://hassantariqblog.wordpress.com/2017/03/22/angular2-using-custom-loader-spinner-as-service-in-angular-2-application/
-
 https://www.npmjs.com/package/ng2-bootstrap-modal
 
 npm install ng2-bootstrap-modal --save
