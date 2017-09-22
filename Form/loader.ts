@@ -1,14 +1,7 @@
 https://hassantariqblog.wordpress.com/2017/03/22/angular2-using-custom-loader-spinner-as-service-in-angular-2-application/
 
-app.module.ts:
---------------
-
-import { LoaderService } from './services/loader.service'
-
-providers: [LoaderService],
-
-loader.service.ts:
-------------------
+1> loader.service.ts:
+--------------------
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -23,11 +16,18 @@ export class LoaderService {
     this.status.next(value);
   }
 }
-
 -------------------------
-
-app.component.ts:
+  
+2> app.module.ts:
 -----------------
+
+import { LoaderService } from './services/loader.service'
+
+providers: [LoaderService],
+
+
+3> app.component.ts:
+--------------------
 
 import { LoaderService } from './services/loader.service'
 
@@ -42,7 +42,7 @@ constructor(private loaderService: LoaderService) { }
  <span *ngIf="showLoader" class="loading"></span>
  
  ----------------------Usage-----------------------------------
- panel.component.ts:
+4> panel.component.ts:
  
  import { LoaderService } from './../../services/loader.service'
  
