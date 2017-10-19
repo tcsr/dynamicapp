@@ -1,0 +1,113 @@
+$icon-font-path: 'assets/fonts/bootstrap/';
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+@import "variables";
+
+$top-card-text: $white;
+
+body {
+    margin: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.07);
+    font-family: Roboto;
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+@font-face {
+	font-family: 'Glyphicons Halflings';
+	src: url("assets/fonts/bootstrap/glyphicons-halflings-regular.eot");
+	src: url("assets/fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), 			url("assets/fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("assets/fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("assets/fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); 
+}
+
+a {
+    text-declartion: none;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: none;
+}
+a:focus {
+    text-decoration: none;
+}
+h4 {
+    margin-bottom: 0;
+    margin-top: 30px;
+    padding-bottom: 5px;
+    font-size: 14px;
+    font-weight: light;
+}
+.buttons {
+    button {
+        margin: 15px 4px 0 0;
+    }
+    p {
+        display: inline-block;
+        vertical-align: bottom;
+        padding: 0 0 3px 5px;
+    }
+}
+.warn {
+    font-size: 12px;
+    font-weight: bold;
+    color: $danger;
+}
+.missing {
+    display: inline;
+    margin-left: 8px;
+    font-size: 12px;
+}
+.form-wrapper, .sections, .head-content, .buttons {
+    width: 80%;
+}
+.heading {
+    background-color: #5975B3;
+    color: white;
+    padding: 10px 0px 10px 0px;
+}
+.survey {
+    padding: 0;
+}
+.btn-space {
+    margin: 10px;
+}
+
+.home-font {
+    font-weight: 500;
+    font-size: 2rem;
+}
+menu
+{
+    padding-left: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.panel-default
+{
+border:0px !important;
+}
+@media (min-width:$screen-lg){
+ .menupanel-body{
+  padding-left:80px;
+ }
+}
+@media only screen and (min-device-width: $screen-sm-min) and (max-device-width: $screen-md-max) {
+    .form-wrapper {
+        width: 100%;
+        margin-left: 0px;
+    }
+    .container {
+     padding-left: 0px !important; 
+     padding-right: 0px !important; 
+    }
+   
+}
+@media only screen and (min-device-width: $screen-iphone-5) and (max-device-width: $screen-xs-max) {
+    .form-wrapper {
+        width: 100%;
+    }
+    .container {
+     padding-left: 0px !important; 
+     padding-right: 0px !important; 
+    }
+  }

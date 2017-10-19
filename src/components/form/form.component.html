@@ -1,0 +1,35 @@
+<div class="form">
+  <form [formGroup]="form" novalidate autocomplete="off">
+  <fieldset  [attr.disabled]="isFormDisabled">
+    <div class="heading">
+      <div>
+        <h1 *ngIf="survey?.title" class="form-title">{{survey?.title}}</h1>
+        <h2 *ngIf="survey?.header" class="form-header">{{survey?.header}}</h2>
+		<span *ngIf="!survey?.header"><h2 *ngIf="requiredFieldStatement" class="required">{{requiredFieldStatement}}</h2></span>
+    	<span *ngIf="survey?.header"><h3 *ngIf="requiredFieldStatement" class="required">{{requiredFieldStatement}}</h3></span>
+      </div>
+    </div>
+    <div *ngIf="survey?.formSections?.length" class="sections">
+      <div *ngFor="let section of survey?.formSections; let index = index;">
+       <section 
+       		[sectionGroup]="form?.controls?.formSections?.controls[index]"
+            [section]="section" 
+            [isSubmitClicked]="isSubmitClicked"
+            [mode]="mode">
+        </section>
+      </div>
+    </div>
+    <div class="form-buttons" *ngIf="mode == 'edit' || mode == 'amend'">
+      <div class="validation-messages">
+        <span *ngIf="errorMessage">{{errorMessage}}</span>
+      </div>
+      <div class="save-messages">
+        <span *ngIf="saveMessage">{{saveMessage}}</span>
+      </div>
+      <button  class="btn btn-primary  btn-space" *ngIf="isSaveEnabled && (mode == 'edit' || mode == 'amend')" (click)="save(form)">Save</button>
+      <button [disabled]="disableButton"  type="button" class="btn btn-primary  btn-space" (click)="submit(form)">Submit</button>
+      <!-- <button type="button" class="btn btn-default  btn-space" *ngIf="!isReadOnly" (click)="cancel()">Cancel</button> -->
+    </div>
+    </fieldset>
+  </form>
+</div>

@@ -1,0 +1,37 @@
+<div class="question">
+	<div *ngIf="question.type == 'text' || question.type == 'email'" [hidden]="!displayQuestion">
+		<text-component [questiondata]="question" [control]="control" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></text-component>
+	</div>
+
+	<div *ngIf="question.type == 'textarea'" [hidden]="!displayQuestion">
+		<textarea-component [questiondata]="question" [control]="control" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></textarea-component>
+	</div>
+
+	<div *ngIf="question.type == 'radio'" [hidden]="!displayQuestion">
+		<radio-component [questiondata]="question" [control]="control" [controlObject]="controlObject" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></radio-component>
+	</div>
+
+	<div *ngIf="question.type == 'date'" [hidden]="!displayQuestion">
+		<date-component [questiondata]="question" [control]="control" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></date-component>
+	</div>
+
+	<div *ngIf="question.type == 'checkbox'" [hidden]="!displayQuestion">
+		<checkbox-component [questiondata]="question" [control]="control" [controlObject]="controlObject" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></checkbox-component>
+	</div>
+	
+	<div *ngIf="question.type == 'info'">
+		<info-component [questiondata]="question" [control]="control"></info-component>
+	</div>
+	
+	<div *ngIf="question.type == 'dropdown'" [hidden]="!displayQuestion">
+        <dropdown-component [questiondata]="question" [control]="control" [controlObject]="controlObject" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></dropdown-component>
+    </div> 
+	
+	<div *ngIf="question.type == 'attachment'">
+		<attachment-component [questiondata]="question" [control]="control" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked"></attachment-component>
+	</div>
+	
+	<div *ngIf="question.type == 'search'" [hidden]="!displayQuestion">
+		<search-component [questiondata]="question" [control]="control" [controlObject]="controlObject" [sectionId]="sectionId" [isSubmitClicked]="isSubmitClicked" [mode]="mode"></search-component>
+	</div>
+</div>

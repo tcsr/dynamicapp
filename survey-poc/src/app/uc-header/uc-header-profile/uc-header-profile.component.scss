@@ -1,0 +1,45 @@
+:host { display: block; }
+.toggle { color: white; margin-right: 20px; display: inline-block; }
+md-card  {
+  position: absolute;
+  top: 54px;
+  right: 5px;
+  z-index: 1000;
+  padding: 16px;
+  font-size: 14px;
+  color: #666;
+  min-width: 225px;
+  strong { font-size: 16px;}
+
+  md-card-actions {
+    border-top: 1px solid #BDBDBD;
+    margin-top: 10px;
+    background-color: #F5F5F5;
+    padding: 0;
+    display: flex;
+
+    a {
+      flex-grow: 1;
+      padding: 7px 0 7px 35px;
+      position: relative;
+      &:first-of-type { border-right: 1px solid #BDBDBD; }
+      span {
+        position: absolute;
+        left: 8px;
+        top: 4px;
+        font-size: 22px;
+      }
+    }
+  }
+}
+.user-details strong {
+  font-weight: 400;
+  font-size: 17px;
+}
+.uc-user {
+  font-size: 32px;
+}
+
+.hide-text{
+  display:none;
+}
