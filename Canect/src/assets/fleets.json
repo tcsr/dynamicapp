@@ -1,0 +1,42 @@
+[
+    {
+        "FLEET1": [
+            {
+                "label": "Fleet 1",
+                "value": "Fleet1"
+            }
+        ]
+    },
+    {
+        "FLEET2": [
+            {
+                "label": "Fleet 2",
+                "value": "Fleet2"
+            }
+        ]
+    },
+    {
+        "FLEET3": [
+            {
+                "label": "Fleet 3",
+                "value": "Fleet3"
+            }
+        ]
+    },
+    {
+        "FLEET4": [
+            {
+                "label": "Fleet 4",
+                "value": "Fleet4"
+            }
+        ]
+    },
+    {
+        "FLEET5": [
+            {
+                "label": "Fleet 5",
+                "value": "Fleet5"
+            }
+        ]
+    }
+]

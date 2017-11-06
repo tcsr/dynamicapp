@@ -1,0 +1,42 @@
+[
+    {
+        "ASSET1": [
+            {
+                "label": "Asset 1",
+                "value": "Asset1"
+            }
+        ]
+    },
+    {
+        "ASSET2": [
+            {
+                "label": "Asset 2",
+                "value": "Asset2"
+            }
+        ]
+    },
+    {
+        "ASSET3": [
+            {
+                "label": "Asset 3",
+                "value": "Asset3"
+            }
+        ]
+    },
+    {
+        "ASSET4": [
+            {
+                "label": "Asset 4",
+                "value": "Asset4"
+            }
+        ]
+    },
+    {
+        "ASSET5": [
+            {
+                "label": "Asset 5",
+                "value": "Asset5"
+            }
+        ]
+    }
+]

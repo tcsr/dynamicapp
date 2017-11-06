@@ -1,0 +1,46 @@
+<div class=" panel panel-default">
+
+  <div class=" panel-heading">
+    Filter
+  </div>
+
+  <div class=" panel-body">
+
+    <div class="row">
+      <div class="col-md-3 col-sm-4">
+        <div>
+          <p-multiSelect [options]="organizations" [(ngModel)]="selectedOrganizations" defaultLabel="Select Organization" styleClass="ui-multiselect-custom"
+            [panelStyle]="{minWidth:'12em'}" maxSelectedLabels="2" (onChange)="onOrganizationSelect($event.value)" class="k-multiselect" selectedItemsLabel=" {0} items selected"></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4">
+        <div>
+          <p-multiSelect [options]="fleets" [(ngModel)]="selectedFleets" defaultLabel="Select Fleet" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4">
+        <div>
+          <p-multiSelect [options]="assets" [(ngModel)]="selectedAssets" defaultLabel="Select Asset" [panelStyle]="{minWidth:'12em'}"></p-multiSelect>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-4">
+        <div class=" text-center">
+          <button kendoButton [primary]="true" class="btn" (click)="applyFilter()">
+            Apply
+          </button>
+          <button kendoButton [primary]="true" class="btn" (click)="clearFilter()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredArray.length > 0">
+      <div class="row" style="padding:15px;">
+        Applied Filter :
+        <pre> {{ filteredArray | json}} </pre>
+      </div>
+    </div>
+
+  </div>
+</div>
