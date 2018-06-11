@@ -1,4 +1,122 @@
- ages = [25, 8, 45, 100, 92, 3];
+https://stackblitz.com/edit/angular-evo5ly?file=app%2Fapp.component.html
+
+  <p-dataTable [value]="rows" [editable]="true">
+    <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header" [editable]="col.isEditable"></p-column>
+    <p-column styleClass="col-button">
+      <ng-template pTemplate="header">
+        <span>
+          Action
+        </span>
+      </ng-template>
+      <ng-template let-row="rowData" pTemplate="body">
+        <span style="margin:5px; background-color: #610a61; color: #ffffff; padding:4px;" title="Copy">
+          <a href="javascript:" style="color: white;" (click)="copyRecord(row)">
+            <i class="fa fa-copy"></i>
+          </a>
+        </span>
+        <span style="margin:5px; background-color: green; color: white; padding:4px;" title="Edit">
+          <a href="javascript:" style="color: white;" (click)="editRecord(row)">
+            <i class="fa fa-edit"></i>
+          </a>
+        </span>
+        <span style="margin:5px; background-color: red; color: white; padding:4px;" title="Delete">
+          <a href="javascript:" style="color: white;" (click)="deleteRecord(row)">
+            <i class="fa fa-trash"></i>
+          </a>
+        </span>
+      </ng-template>
+    </p-column>
+  </p-dataTable>
+
+
+-------------------------
+
+ngOnInit() {
+
+    this.cols = [
+      {
+        "field": "prodid",
+        "header": "Product Id"
+      },
+      {
+        "field": "prodName",
+        "header": "Product Name"
+      },
+      {
+        "field": "prodDesc",
+        "header": "Product Description"
+      },
+      {
+        "field": "prodPrice",
+        "header": "Product Price"
+      }
+      ,
+      {
+        "field": "manufactureDate",
+        "header": "Manufacture Date"
+      }
+    ];
+
+    this.rows = [
+      {
+        "prodid": "1",
+        "prodName": "Mobiles",
+        "prodDesc": "Smart phone Manufcaturing",
+        "prodPrice": "10000",
+        "manufactureDate": ""
+      },
+      {
+        "prodid": "2",
+        "prodName": "Laptops",
+        "prodDesc": "Laptop Manufcaturing",
+        "prodPrice": "20000",
+        "manufactureDate": ""
+      }
+    ];
+
+    this.rows.map(row => {
+      row.isEditable = false;
+    });
+
+    console.log(this.rows);
+
+  }
+
+  copyRecord(row) {
+    console.log("Copy Record : ");
+    console.log(row);
+  }
+
+  editRecord(row) {
+    console.log("Edit Record: ");
+    this.rows.filter(row => row.isEditable).map(r => { r.isEditable = false; return r })
+    row.isEditable = true;
+    console.log(row)
+  }
+
+  deleteRecord(row) {
+    console.log("Delete Record: ");
+    console.log(row);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ages = [25, 8, 45, 100, 92, 3];
   myList = [
     {
       name: "Chandra",
