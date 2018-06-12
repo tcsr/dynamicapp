@@ -1,3 +1,8 @@
+import { Router } from '@angular/router'
+
+ providers: [{ provide: Router, useValue: {} }]
+
+
 https://stackblitz.com/edit/angular-evo5ly?file=app%2Fapp.component.html
 
   <p-dataTable [value]="rows" [editable]="true">
