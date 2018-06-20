@@ -1,12 +1,4 @@
-
-https://embed.plnkr.co/plunk/adupfu
-
-1. https://stackoverflow.com/questions/43751129/how-to-use-multiple-router-outlet-in-angular2
-2. https://codeburst.io/everything-you-need-to-know-on-securing-your-angular-2-spa-49c509c726c5
-3. https://github.com/theo4u/angular4-auth/tree/master/src/app
-
-https://github.com/theo4u/angular4-auth
-
+https://mattlewis92.github.io/angular-calendar/#/kitchen-sink
 
 =====================================================================================================================
   
