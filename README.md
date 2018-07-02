@@ -1,3 +1,6 @@
+<input type="text" placeholder="Test Price" [ngModel]="testPrice | currency:'USD':'symbol':'2.2'" [ngModelOptions]="{updateOn:'blur'}"
+    (ngModelChange)="testPrice=$event" />
+
 https://mattlewis92.github.io/angular-calendar/#/kitchen-sink
 
 =====================================================================================================================
