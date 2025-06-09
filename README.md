@@ -1,3 +1,44 @@
+
+Step 1 - Uninstall all Karma Jasmine Packages 
+     --> npm uninstall @types/jasmine jasmine-core karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter
+Step 2 - Remove test object from Angular.json
+Step 3 - Delete karma.conf.js file and test.ts file
+Step 4 - Install JEST --> npm i jest @types/jest jest-preset-angular
+Step 5 - Create setup.jest.ts file
+Step 6 - Update tsconfig.spec.json file
+Step 7 - Add jest configuration in package.json
+
+ "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setup.jest.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "<rootDir>/tsconfig.spec.json",
+        "stringifyContentPathRegex": "\\.html$"
+      }
+    }
+  }
+
+Step 8 - Add scripts in package.json to run JEST
+
+ "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+
+  ==========================================
+
 <input type="text" placeholder="Test Price" [ngModel]="testPrice | currency:'USD':'symbol':'2.2'" [ngModelOptions]="{updateOn:'blur'}"
     (ngModelChange)="testPrice=$event" />
 
