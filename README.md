@@ -38,327 +38,108 @@ Step 8 - Add scripts in package.json to run JEST
   },
 
   ==========================================
+import { inject } from '@angular/core';
+import { signalStore, withComputed, withMethods, withState, patchState, withHooks } from '@ngrx/signals';
+import Keycloak from 'keycloak-js';
+import type { KeycloakProfile } from 'keycloak-js';
 
-<input type="text" placeholder="Test Price" [ngModel]="testPrice | currency:'USD':'symbol':'2.2'" [ngModelOptions]="{updateOn:'blur'}"
-    (ngModelChange)="testPrice=$event" />
+// Define the shape of your application's state
+interface AppState {
+  title: string;
+  profile: {
+    title: string;
+    lastName: string;
+    firstName: string;
+    email: string;
+  };
+  myRoles: string[];
+}
 
-https://mattlewis92.github.io/angular-calendar/#/kitchen-sink
+// Define the initial state of the store
+const initialState: AppState = {
+  title: 'my-host-app',
+  profile: {
+    title: '',
+    lastName: '',
+    firstName: '',
+    email: '',
+  },
+  myRoles: [],
+};
 
-=====================================================================================================================
-  
-	  <panel>
-		IF  <panel-content>
-		   
-		   IF <nested-panel>
-			
-				  if<panel-content>
-				  
-				   </panel-content>
-			
-			  </nested-panel>
-	   
-		   </panel-content>
-	  </panel>
-=================================================================================  
-<dynamic-controls>
-  
-  <div *ngFor="let dynamiComp of dynamicData">
-  
-	  <div [ngSwitch]="dynamiComp.COMP_TYPE">
-	  
-	   <div *ngSwitchCase="'Text_Box'" [style.width.%]="dynamiComp.compWidth">
-			<textbox-component [dynamicData]="dynamiComp"></textbox-component>
-        </div>
-        <div *ngSwitchCase="'Text_Area'" [style.width.%]="dynamiComp.compWidth">
-			<textarea-component [dynamicData]="dynamiComp"></textarea-component>
-        </div>
-        <div *ngSwitchCase="'Radio'">
-			<radio-component [dynamicData]="dynamiComp"></radio-component>
-        </div>
-        <div *ngSwitchCase="'Date_Picker'" [style.width.%]="dynamiComp.compWidth">
-			<date-component [dynamicData]="dynamiComp"></date-component>
-        </div>
-        <div *ngSwitchCase="'Check_Box'">
-			<checkbox-component [dynamicData]="dynamiComp"></checkbox-component>
-        </div>
-        <div *ngSwitchCase="'Drop_Down'" [style.width.%]="dynamiComp.compWidth">
-			<dropdown-component [dynamicData]="dynamiComp"></dropdown-component>
-        </div>
-        <div *ngSwitchCase="'Label'" [style.width.%]="dynamiComp.compWidth">
-			<label-component [dynamicData]="dynamiComp"></label-component>
-        </div>
-        <div *ngSwitchCase="'Empty'" [style.width.%]="dynamiComp.compWidth">
-			<empty-component></empty-component>
-        </div>
-	  
-	  </div>
-  
-  </div>
-  
-</dynamic-controls>
-  
-  
-=================================================================================
+const excludedRoles = new Set(['default-roles-web', 'offline_access', 'uma_authorization']);
 
-	  <div *ngFor="let panel of  Panels">
-	    <panel [dynamicData]=""></panel>
-	  </div>
-	  
-=================================================================================
-     <panel>
-	 
-	   <div class="panel panel-default">
-	   
-		   <div *ngIf="panel.PANEL_TITLE" class="panel-tilte">
-		      {{ panel.PANEL_TITLE }}
-		   </div>
-		   
-		   <div *ngIf="panel.PANEL_CONTENT" class="panel-body">
-		      
-				<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
-				
-					<panel-content [dynamicData]="panelContent"></panel-content>
-				
-				</div>
-											  			   
-			</div>  
-			
-	  </div>
-		   	    	 
-	 </panel>
-      
-=================================================================================
-  
-  <panel-content>
-  
-	<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
-				
-	   <dynamic-controls [dynamicData]="panelContent"></dynamic-controls>
-				
-	</div>
-    
-  </panel-content>
-  
-=================================================================================
-  
-  <nested-panel-content>
-  
-	<div *ngFor=" let panelContent of panel.PANEL_CONTENT">
-				
-	   <dynamic-controls [dynamicData]="panelContent"></dynamic-controls>
-				
-	</div>
-    
-  </nested-panel-content>
+export const AppStore = signalStore(
+  { providedIn: 'root' },
+  withState(initialState),
 
-=================================================================================
+  // Use withMethods to define functions that can modify the state.
+  withMethods((store, keycloak = inject(Keycloak)) => ({
+    /**
+     * Connects to Keycloak, initializes the client, and fetches user data.
+     * Patches the store state with the fetched profile and roles.
+     * This method is asynchronous as Keycloak's methods return Promises.
+     */
+    async connectKeycloak(): Promise<void> {
+      try {
+        console.log('Initializing Keycloak and fetching user data...');
 
+        const authenticated = keycloak.authenticated;
 
+        if (authenticated) {
+          // Fetch the user's profile from Keycloak
+          const userProfile: KeycloakProfile = await keycloak.loadUserProfile();
 
-<my-date-picker formControlName="toDate" name="toDate" [options]="myDatePickerOptions" [(ngModel)]="toDate" (dateChanged)="onToDateChanged($event)"></my-date-picker>
----------------------------------------------
+          // Patch the store with the updated profile information.
+          // We use patchState to merge the new profile data without
+          // overwriting other state properties.
+          patchState(store, {
+            profile: {
+              firstName: userProfile.firstName || '',
+              lastName: userProfile.lastName || '',
+              email: userProfile.email || '',
+              title: '', // You can add logic here to determine the title if needed
+            },
+          });
 
+          // Extract roles from the Keycloak token's realm_access.
+          // Get all roles from Keycloak
+          const allRoles: string[] = keycloak.realmAccess?.roles || [];
 
+          // Filter out the unwanted roles
+          const userRoles = allRoles.filter(role => !excludedRoles.has(role));
 
-//import { IMyDpOptions } from 'mydatepicker';
-import { MyDatePicker, IMyDpOptions, IMyDateModel } from 'mydatepicker';
-----------------------------------------------------------
- onToDateChanged(event: IMyDateModel) {
-        //console.log("Date :: " + event.formatted + "\n");
+          // Patch the store with the user's roles.
+          patchState(store, {
+            myRoles: userRoles,
+          });
 
-        //this.checkDate(event.formatted);
-        if (event.formatted === "" && this.searchForm.value.toDate instanceof Object) {
-            this.searchForm.value.toDate.formatted = "";
+          console.log('Successfully fetched and stored user data.');
+          console.log('Profile:', store.profile());
+          console.log('Roles:', store.myRoles());
+
+        } else {
+          console.log('User is not authenticated.');
         }
-		
-		}
-		
-		
-		-------------------------------
-		
-    //DatePicker - Code Begin Here
-    private myDatePickerOptions: IMyDpOptions = {
-        // other options...
-        dateFormat: this.dateService.dateFormate(),
-        editableDateField: false,
-        disableSince: this.dateService.disableDate()
-    };
 
-    private model: Object = { date: { year: 2018, month: 10, day: 9 } };
-    //DatePicker - Code End Here
-	----------------------------------------
-	
-	Loader
-	
-	
-	<div *ngIf="spinnerFlag">
-    <div class="myOverlay"></div>
-    <i class="fa fa-spinner fa-pulse fa-3x fa-fw loadingGIF"></i>
-</div>
-------------------------------
+      } catch (error) {
+        console.error('Failed to initialize Keycloak or fetch user data:', error);
+      }
+    },
+  })),
 
-
- spinnerFlag: boolean = false;
- 
- ///before service call
- 
- 
- this.spinnerFlag = true;
-
-        this.dashboardService.download_File(this.requestName, fileType, this.sectionName, selectedIDs, this.searchForm.value)
-            .subscribe(data => {
-                FileSaver.saveAs(data, fileName);
-
-                this.spinnerFlag = false;
-            });
-	---------------------------
-	
-	
-	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  
-  ------------------------------------
-  
-  declare var localStorage: Storage;
-    localStorage.setItem("EXPORT_BILLS_AGING_DETAILS", JSON.stringify(data));
-	 this.exportBillsAgingDetails = (localStorage.getItem("EXPORT_BILLS_AGING_DETAILS")) ? JSON.parse(localStorage.getItem("EXPORT_BILLS_AGING_DETAILS")) : "";
-	-------------------------------
-  
-    //Setting URL Parameter
-    setConfig(key, value) {
-        this.config[key] = value;
-
-        localStorage.setItem(key, value);
+  // Use withComputed to create derived signals from the state.
+  // These are read-only and will automatically update when their dependencies change.
+  withComputed(({ profile }) => ({
+    fullName: () => `${profile().firstName} ${profile().lastName}`,
+  })),
+  withHooks(({ connectKeycloak }) => ({
+    onInit: () => {
+      connectKeycloak();
+    },
+    onDestroy() {
+      console.log('AppStore is being destroyed...');
     }
+  }))
+);
 
-    //Getting URL Parameter
-    getConfig(key) {
-        return localStorage.getItem(key);
-
-        //return this.config;
-    }
----------------------------
-
-<div>
-  <div *ngFor="let panel of dynamicData | orderby:'PANEL_ORDER'">
-    <!-- {{panel.PANEL_ID}} : {{panel.PANEL_ORDER}} : {{ panel.PANEL_TYPE}} <br> -->
-    <div class="panel panel-default">
-      <div *ngIf="panel.PANEL_TITLE" class="panel-heading panel-title text-center col-md-12">
-        {{ panel.PANEL_TITLE}}
-      </div>
-
-    </div>
-
-    <div>
-      <div *ngFor="let panelval of panel?.PANEL_CONTENT | orderby:'ORDER'" [ngClass]="{'col-md-12': panel.COMP_PER_ROW == 1,'col-md-6': panel.COMP_PER_ROW == 2, 'col-md-4': panel.COMP_PER_ROW == 3, 'col-md-3': panel.COMP_PER_ROW == 4}" class="comp-space">
-        <!-- <pre *ngIf="panelval">{{ panelval | json }}</pre> -->
-        <!-- <div *ngIf="panelval.COMP_NAME">{{ panelval.COMP_NAME }} - {{ panelval.COMP_LABL }}</div> -->
-
-        <div *ngIf="panelval.COMP_TYPE=='ENV_LINK'" class="row">
-          <div class="col-md-12">
-            <div style="margin: 8px 0;">
-              <envLink-Component [envLinkData]="panelval"></envLink-Component>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3" *ngIf="panelval.COMP_TYPE=='Menu'">
-          <menu-component [menuData]='panelval'></menu-component>
-        </div>
-        <!-- <div class="col-md-9" *ngIf="panelval?.NESTED_PANELS?.PANEL_CONTENT">
-         :NESTED_PANELS:
-        
-       </div> -->
-
-
-
-        <!-- PanelVal := {{panelval | json}} -->
-
-
-
-        <div [ngSwitch]="panelval.COMP_TYPE">
-          <!-- {{panelval  | json}} -->
-          <div *ngSwitchCase="'Text_Box'" [style.width.%]="panelval.compWidth">
-            <textbox-component [dynamicData]="panelval"></textbox-component>
-          </div>
-          <div *ngSwitchCase="'Text_Area'" [style.width.%]="panelval.compWidth">
-            <textarea-component [dynamicData]="panelval"></textarea-component>
-          </div>
-          <div *ngSwitchCase="'Radio'">
-            <radio-component [dynamicData]="panelval"></radio-component>
-          </div>
-          <div *ngSwitchCase="'Date_Picker'" [style.width.%]="panelval.compWidth">
-            <date-component [dynamicData]="panelval"></date-component>
-          </div>
-          <div *ngSwitchCase="'Check_Box'">
-            <checkbox-component [dynamicData]="panelval"></checkbox-component>
-          </div>
-          <div *ngSwitchCase="'Drop_Down'" [style.width.%]="panelval.compWidth">
-            <dropdown-component [dynamicData]="panelval"></dropdown-component>
-          </div>
-          <div *ngSwitchCase="'Label'" [style.width.%]="panelval.compWidth">
-            <label-component [dynamicData]="panelval"></label-component>
-          </div>
-          <div *ngSwitchCase="'Empty'" [style.width.%]="panelval.compWidth">
-            <empty-component></empty-component>
-          </div>
-
-          <!-- </div> -->
-
-        </div>
-
-
-
-        <div *ngIf="panelval.COMP_NAME"></div>
-
-        <!-- <div *ngFor="let pval of panelval">
-
-          <pre>{{ pval | json }}</pre>
-
-        </div> -->
-        <div *ngIf="panel.PANEL_TYPE == 'Button_Panel' && panelval.COMP_LABL">
-          <!-- <pre> {{panelval | json}} </pre> -->
-          <button-component [dynamicData]="panelval"></button-component>
-        </div>
-
-
-        <panel-component [dynamicData]="panelval.NESTED_PANELS"></panel-component>
-      </div>
-    </div>
-  </div>
-</div>
-
--------------------------
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ComponentRef, ViewContainerRef } from '@angular/core';
-import { ComponentFactory, ChangeDetectorRef, ComponentFactoryResolver } from '@angular/core'
- constructor(private _dgitService: DgitService, private resolver: ComponentFactoryResolver) { }
- 
-   @ViewChild("dgitContainer", { read: ViewContainerRef }) container;
-  componentRef: ComponentRef<any>;
-	
-    loadComponent(componentName: any, dynamicData: any) {
-    this.container.clear();
-    const factory: ComponentFactory<any> = this.resolver.resolveComponentFactory(componentName);
-    this.componentRef = this.container.createComponent(factory);
-    this.componentRef.instance.dynamicData = dynamicData;
-    this.componentRef.instance.output.subscribe(event => console.log(event));
-  }
- ------------------css
- .myOverlay {
-z-index: 2;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0.2;
-    background: #000;
-}
-
-.loadingGIF {
-    margin-top: 27%;
-    position: absolute;
-    left: 45%;
-    top: 0;
-    z-index: 3;
-    font-size: 64px;
-}
